@@ -8,7 +8,7 @@ Designed for an easy, out-of-the-box Emacs.
 Emacs is not a fearful existence.
 
 ** Copy *OpenEmacs* Configure
-Download file: [[https://raw.githubusercontent.com/ISouthRain/OpenEmacs/refs/heads/master/init.el][init.el]]
+Download file: [[https://github.com/ISouthRain/OpenEmacs/blob/master/init.el][init.el]]
 
 Copy to:
 
