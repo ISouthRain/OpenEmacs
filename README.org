@@ -1,0 +1,416 @@
+# -*- coding: utf-8; -*-
+
+** Introduce
+No magic, no difficulty, just use Emacs.
+
+Designed for an easy, out-of-the-box Emacs.
+
+Emacs is not a fearful existence.
+
+** Copy *OpenEmacs* Configure
+Download file: [[https://raw.githubusercontent.com/ISouthRain/OpenEmacs/refs/heads/master/init.el][init.el]]
+
+Copy to:
+
+- *Linux/Uinx* User
+  *~/.emacs.d/init.el*
+
+- *Windows* User
+  *C:/Users/YourUserName/AppData/Roaming/.emacs.d/init.el*
+
+Start Emacs and wait for a while, Emacs will automatically download the content.
+
+If you encounter input like *network* for the first time, select: always
+
+Then, start Emacs and continue reading...
+
+** README
+If you want to use it, this is something you must know:
+|--------------------+-----------+---------------------------+-----------------------|
+| Keyboard           | Emacs Key | Emacs example             | Comment               |
+|--------------------+-----------+---------------------------+-----------------------|
+| Ctrl               | C-        | Ctrl-x Ctrl-f ==> C-x C-f | Open File             |
+| Alt                | M-        | Alt-x ==> M-x             | Execute Eamcs command |
+| Enter              | RET       | Alt-x emacs-version RET   | Example Eamcs command |
+|                    |           | Ctrl-@ ==> C-@            | Select text           |
+| Up/down/left/right |           |                           | Move the cursor       |
+|                    |           | Alt-w ==> M-w             | Copy text             |
+|                    |           | Ctrl-w ==> C-w            | Cut text              |
+|                    |           | Ctrl-y ==> C-y            | Paste text            |
+|                    |           | Alt-y == M-y              | Preview Past text     |
+|--------------------+-----------+---------------------------+-----------------------|
+
+** The Configure
+If you only care about the functions that need to be called manually by the user, then you jump directly to the title: *recentf*
+
+*** Basic
+Users don't need to care about this, here is just showing you that Emacs can be customized through configuration files.
+#+begin_src emacs-lisp :tangle init.el
+(add-to-list 'default-frame-alist '(fullscreen . maximized)) ;; Maximize window after starting Emacs
+(setq inhibit-startup-message t) ;; Close Emacs launch screen
+(setq inhibit-splash-screen t)   ;; Close Emacs startup help screen
+(setq initial-scratch-message (concat ";; Happy hacking, " user-login-name " - Emacs \u2665 you!\n\n"))
+
+;; (menu-bar-mode 0) ;; Emacs Text Toolbar above
+(tool-bar-mode 0) ;; Close Emacs icon toolbar above
+(scroll-bar-mode 0) ;; Close scrollbar
+
+(setq ring-bell-function 'ignore) ;; Close Emacs warning sound
+
+;; File related: Backup, Delete Recycle Bin
+(setq make-backup-files nil        ;; Close the backup file
+      create-lockfiles nil         ;; Close Create a backup file
+      delete-by-moving-to-trash t) ;; Emacs moves to the recycling bin when deleting files
+#+end_src
+
+*** theme
+#+begin_src emacs-lisp :tangle init.el
+(load-theme 'modus-operandi-tinted)
+#+end_src
+
+*** font
+#+begin_src emacs-lisp :tangle init.el
+(set-face-attribute 'default nil :height 140)
+;; (set-face-attribute 'default nil :family "Consolas" :height 140)
+#+end_src
+
+*** package
+Manage download package sources.
+#+begin_src emacs-lisp :tangle init.el
+(setq package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
+                         ("nongnu" . "https://elpa.nongnu.org/nongnu/")
+                         ("melpa" . "https://melpa.org/packages/")))
+#+end_src
+
+*** vertico
+Users don't need to care about how to use this, it is already in use.
+
+*vertico* is a plugin that provides user-friendly for Emacs *minibuffer*.
+#+begin_src emacs-lisp :tangle init.el
+(use-package vertico
+  :ensure t
+  :hook (after-init . vertico-mode)
+  :bind (:map vertico-map
+              ("DEL" . vertico-directory-delete-char))
+  :custom
+  (vertico-count 10)
+  )
+#+end_src
+
+*** orderless
+Users don't need to care about how to use this, it is already in use.
+
+*orderless* is a tool that provides fuzzy search and is very practical.
+#+begin_src emacs-lisp :tangle init.el
+(use-package orderless
+  :ensure t
+  :config
+  (setq completion-styles '(orderless basic)
+        completion-category-defaults nil
+        completion-category-overrides '((file (styles partial-completion)))))
+#+end_src
+
+*** marginalia
+Users don't need to care about how to use this, it is already in use.
+
+*marginalia* allows Emacs *minibuffer* to display comments.
+#+begin_src emacs-lisp :tangle init.el
+;; Display information in Minibuffer
+(use-package marginalia
+  :ensure t
+  :hook (after-init . marginalia-mode))
+#+end_src
+
+*** time
+Let Emacs' *modeline* display time
+#+begin_src emacs-lisp :tangle init.el
+;; modelline display time
+(use-package time
+  :ensure nil
+  :hook (after-init . display-time-mode)
+  :custom
+  (display-time-24hr-format t);; 24-hour system
+  (display-time-format "%m-%d %a %H:%M")
+  (display-time-day-and-date t) ;; Show time, day, date
+  )
+#+end_src
+
+*** autorevert
+Users don't need to care about how to use this, it is already in use.
+#+begin_src emacs-lisp :tangle init.el
+;; Automatically update files after external changes
+(use-package autorevert
+  :ensure nil
+  :hook (after-init . global-auto-revert-mode))
+#+end_src
+
+*** saveplace
+Users don't need to care about how to use this, it is already in use.
+
+When you reopen a file, it will automatically restore to the location where you were in the file last time.
+#+begin_src emacs-lisp :tangle init.el
+;; Where the cursor is located before saving each file
+(use-package saveplace
+  :ensure nil
+  :hook (after-init . save-place-mode)
+  :custom
+  (save-place-file "~/.emacs.d/places"))
+#+end_src
+
+*** which-key
+Users don't need to care about how to use this, it is already in use.
+
+*which-key* can help the user indicate what functions your next key will perform.
+#+begin_src emacs-lisp :tangle init.el
+(use-package which-key
+  :ensure nil
+  :if (>= emacs-major-version 30)
+  :diminish
+  :hook (window-setup . which-key-mode))
+#+end_src
+
+*** tab-line
+Users don't need to care about how to use this, it is already in use.
+
+Show buffer name.
+#+begin_src emacs-lisp :tangle init.el
+(use-package tab-line
+  :ensure nil
+  :hook (window-setup . global-tab-line-mode))
+#+end_src
+
+*** recentf
+Automatically record the file you open, making it easier to open it next time.
+
+How to use: *M-x recentf RET*
+#+begin_src emacs-lisp :tangle init.el
+(use-package recentf
+  :ensure nil
+  :hook (after-init . recentf-mode)
+  :custom
+  (recentf-filename-handlers '(abbreviate-file-name))
+  (recentf-max-saved-items 400)
+  (recentf-max-menu-items 400)
+  (recentf-save-file "~/.emacs.d/recentf")
+  :config
+  (recentf-cleanup))
+#+end_src
+
+*** project
+When you open a project with .git/.svn, you can search for the entire project content.
+| Key    | Func                                                                  | Comment                              |
+|--------+-----------------------------------------------------------------------+--------------------------------------|
+| C-x pf | project-find-file                                                     | Search Project File                  |
+| C-x pd | project-find-dir                                                      | Search Project Directory             |
+| C-x pb | project-switch-to-buffer                                              | Search Project buffer                |
+| C-x pg | project-find-regexp                                                   | Search Project text                  |
+|--------+-----------------------------------------------------------------------+--------------------------------------|
+| C-x pr | project-query-replace-regexp                                          | Project replace text                 |
+|        | (It is recommended to use the next title: `deadgrep` instead of this) | (Maybe Windows system failed to use) |
+|--------+-----------------------------------------------------------------------+--------------------------------------|
+| C-x pc | project-compile                                                       | Run Project compile(e.g. make)       |
+| ...... | ......                                                                | ......                               |
+
+#+begin_src emacs-lisp :tangle init.el
+(use-package project
+  :ensure nil)
+#+end_src
+
+*** deadgrep
+*deadgrep* is a tool for searching/replacing text with the help of *ripgrep*.
+
+To use `deadgrep`, you must install: [[https://github.com/BurntSushi/ripgrep][GitHub - BurntSushi/ripgrep: ripgrep recursively searches directories for a r...]]
+
+| Key    | Func     | Comment       |
+|--------+----------+---------------|
+| C-x pg | deadgrep | Search/Replace Text |
+
+If you want to find and replace certain text of all files under the project, then you can:
+
+1. `C-x pg` Enter text to search (replace) and then `enter`
+2. Use `C-x C-q` to switch read-only/write method, directly modify content, all files can be modified
+3. Then observe whether the file/buffer content of your project has changed
+
+#+begin_src emacs-lisp :tangle init.el
+(use-package deadgrep
+  :ensure t
+  :bind
+  (([remap project-find-regexp] . deadgrep)))
+#+end_src
+
+*** consult
+`consult` is a collection of various tool commands for Emacs.
+
+`consult` provides preview/extension/visualization functions for these tool commands.
+
+Discover `consult` is unique:
+1. First open two files/buffers
+2. Call: `M-x switch-to-buffer RET` and observe
+3. Call: `M-x consult-buffer RET` and you will find that `consult` comes with the `preview`
+
+The following `consult-xxxx` is a common function, and you can explore it slowly. It doesn’t matter if you don’t care.
+| Command             | Comment                                                            |
+|---------------------+--------------------------------------------------------------------|
+| consult-line        | Search the text of the current buffer                              |
+| consult-recent-file | Search and open the recently opened file, similar to `M-x recentf` |
+| consult-ripgrep     | Use `ripgrep` to search for (item) text, similar to `deadgrep`     |
+| consult-imenu       | Search for the symbol/function/title of the current file           |
+| .......             | ......                                                             |
+#+begin_src emacs-lisp :tangle init.el
+(use-package consult
+  :ensure t
+  :bind
+  (([remap imenu] . consult-imenu)
+   ([remap switch-to-buffer] . consult-buffer)
+   ([remap switch-to-buffer-other-window] . consult-buffer-other-window)
+   ([remap switch-to-buffer-other-frame] . consult-buffer-other-frame)
+   ("M-g M-g" . consult-line)
+   ("M-g g" . consult-goto-line)
+   ([remap bookmark-jump] . freedom/consult-bookmark)
+   ([remap repeat-complex-command] . consult-complex-command)
+   ([remap yank-pop] . consult-yank-pop)
+   ([remap Info-search] . consult-info)
+   ("C-c cf" . consult-recent-file)
+   ("C-c cF" . consult-flymake)
+   ("C-c cg" . consult-grep)
+   ("C-c cG" . consult-line-multi)
+   ("C-c ck" . consult-kmacro)
+   ("C-c cl" . consult-locate)
+   ("C-c co" . consult-outline)
+   ("C-c cr" . consult-ripgrep)
+   :map isearch-mode-map
+   ("C-c h" . consult-isearch-history)
+   :map minibuffer-local-map
+   ("C-c h" . consult-history)
+   :map org-mode-map
+   ([remap imenu] . consult-outline))
+  :custom
+  (register-preview-delay 0.5)
+  (register-preview-function #'consult-register-format)
+  (xref-search-program 'ripgrep)
+  (xref-show-xrefs-function #'consult-xref)
+  (xref-show-definitions-function #'consult-xref)
+  (consult-preview-key 'any) ;; Preview content, can be set to buttons
+  (consult-async-refresh-delay 1.0) ;; Prevent Emacs from being stuck by using external programs, for example: consult-ripgrep
+  (consult-async-min-input 2) ;; Start searching at the minimum number of characters
+  (consult-narrow-key "?") ;; Optional module buttons
+  :config
+
+  ;; Support Windows system `everythine.exe` software search file to use `conslut-locate`
+  (when (and (eq system-type 'windows-nt))
+    (setq consult-locate-args (encode-coding-string "es.exe -i -p -r" 'gbk)))
+
+  ;; Disable preview of certain features
+  (defmacro +no-consult-preview (&rest cmds)
+    `(consult-customize ,@cmds :preview-key "M-."))
+  (+no-consult-preview
+   consult-ripgrep consult-git-grep consult-grep
+   consult-bookmark consult-recent-file
+   consult--source-recent-file consult--source-project-recent-file consult--source-bookmark)
+  )
+#+end_src
+
+* Coding
+Here we will introduce you to how to encode in Emacs.
+
+** LSP(Language Server Protocol)
+If you don't know what `LSP` is, I have to explain to you what `LSP` is.
+
+Simply put: LSP is a function/definition navigation, code documentation and so on that provides code.
+With LSP, you can jump to code definitions and other things like IDEA software.
+LSP is very lightweight, and the corresponding service programs of each programming language in LSP are different. To write a programming language, you only need to have the corresponding service programs.
+
+Emacs's LSP manager is `eglot`, which is used to start the service.
+
+If use `consult`, When you write the code, try to run it: `consult-imenu`, `consult-flymake`, You will find surprises.
+
+| Key   | Cmmand                | Comment          |
+|-------+-----------------------+------------------|
+| M-.   | xref-find-definitions | Go to definition |
+| M-,   | xref-go-back          | Back             |
+| C-M-, | xref-go-forward       | Forward          |
+|       |                       |                  |
+
+#+begin_src emacs-lisp :tangle init.el
+(use-package eglot
+  :ensure nil
+  :if (>= emacs-major-version 29)
+  :hook
+  (eglot-managed-mode . (lambda () (eglot-inlay-hints-mode -1)));; No prompt is displayed
+  :hook
+  ;; NOTE: Please add your programming language here
+  ((c-mode c-ts-mode c++-mode c++-ts-mode rust-mode rust-ts-mode) . eglot-ensure)
+  :bind (:map eglot-mode-map
+              ("C-c la" . eglot-code-actions) ;; Automatically write/repair code.
+              ("C-c lr" . eglot-rename)
+              ("C-c lf" . eglot-format) ;; Format current buffer
+              ("C-c lc" . eglot-reconnect)
+              ("C-c ld" . eldoc)) ;; view document
+  :custom
+  (eglot-autoshutdown t) ;; Automatically stop after closing all projects buffer
+  (eglot-report-progress nil);; Hide all eglot event buffers
+  :config
+  (setq eglot-stay-out-of '(company));; No other complementary backend options are changed
+  )
+#+end_src
+
+*** LSP Example For C Language
+Now let's say you're writing C language,
+Then you need to download the LSP program corresponding to C language: `clangd` ==> [[https://github.com/clangd/clangd/releases][Releases · clangd/clangd · GitHub]]
+
+clangd parses your code with a file: compile_commands.json
+
+For how to generate compile_commands.json in your project, please use google search, which can be generated at compile time by making/cmake.
+
+If your project is not made/cmake or something like compile_commands.json, then you can use this function to generate it automatically.
+
+1. M-x freedom/compile-commands-json RET
+2. Select Project root dir
+3. Is ok, enjoy, this command will not execute any gcc compile command, it will only generate the example gcc compile command to compile_commands.json file
+
+If you are writing other programming languages, this may be different, for example, rust does not require compile_commands.json at all, rust only requires rust-analyzer.
+#+begin_src emacs-lisp :tangle init.el
+(defun freedom/compile-commands-json ()
+  "Generate compile_commands.json for all .c/.C files in the selected directory.
+Includes all directories containing .h/.H files as -I include paths."
+  (interactive)
+  (let* ((root (read-directory-name "Select project root: "))
+         (c-files (directory-files-recursively root "\\.\\(c\\|C\\)$"))
+         (h-dirs (let ((hs (directory-files-recursively root "\\.\\(h\\|H\\)$"))
+                       (dirs '()))
+                   (dolist (h hs)
+                     (let ((dir (file-relative-name (file-name-directory h) root)))
+                       (unless (member dir dirs)
+                         (push dir dirs))))
+                   dirs))
+         (json-file (expand-file-name "compile_commands.json" root))
+         (command-entries '()))
+
+    ;; Construct the compile_commands.json project for each c file
+    (dolist (c-file c-files)
+      (let* ((rel-file (file-relative-name c-file root))
+             (obj-file (concat (file-name-sans-extension rel-file) ".o"))
+             (args (append
+                    '("gcc" "-o")
+                    (list obj-file "-g")
+                    (mapcar (lambda (dir) (concat "-I" dir)) h-dirs)
+                    (list rel-file)))
+             (entry `(("directory" . ,(expand-file-name root))
+                      ("arguments" . ,args)
+                      ("file" . ,rel-file))))
+        (push entry command-entries)))
+
+    ;; Write JSON to compile_commands.json file
+    (with-temp-file json-file
+      (insert (json-encode command-entries)))
+    (message "compile_commands.json generated at: %s" json-file)))
+#+end_src
+
+* Writing
+** Org-mode
+Org-mdoe is a writing artifact, please go to the official website to learn more: [[https://orgmode.org/][Org mode for GNU Emacs]]
+#+begin_src emacs-lisp :tangle init.el
+(use-package org
+  :ensure nil)
+#+end_src
+
