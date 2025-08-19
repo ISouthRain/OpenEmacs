@@ -3,20 +3,23 @@
 ** Introduce
 No magic, no difficulty, just use Emacs.
 
-Designed for an easy, out-of-the-box Emacs.
+Designed for an easy, humanized intuitive, out-of-the-box Emacs.
 
 Emacs is not a fearful existence.
 
+[[./preview.png]]
 ** Copy *OpenEmacs* Configure
 Download file: [[https://github.com/ISouthRain/OpenEmacs/blob/master/init.el][init.el]]
 
 Copy to:
 
 - *Linux/Uinx* User
-  *~/.emacs.d/init.el*
+
+    *~/.emacs.d/init.el*
 
 - *Windows* User
-  *C:/Users/YourUserName/AppData/Roaming/.emacs.d/init.el*
+
+    *C:/Users/YourUserName/AppData/Roaming/.emacs.d/init.el*
 
 Start Emacs and wait for a while, Emacs will automatically download the content.
 
@@ -41,7 +44,7 @@ If you want to use it, this is something you must know:
 |--------------------+-----------+---------------------------+-----------------------|
 
 ** The Configure
-If you only care about the functions that need to be called manually by the user, then you jump directly to the title: *recentf*
+If you only care about the functions that need to be called manually by the user, then you jump directly to the title: =recent=
 
 *** Basic
 Users don't need to care about this, here is just showing you that Emacs can be customized through configuration files.
@@ -50,6 +53,12 @@ Users don't need to care about this, here is just showing you that Emacs can be 
 (setq inhibit-startup-message t) ;; Close Emacs launch screen
 (setq inhibit-splash-screen t)   ;; Close Emacs startup help screen
 (setq initial-scratch-message (concat ";; Happy hacking, " user-login-name " - Emacs \u2665 you!\n\n"))
+;; Show your last execute command
+(setq frame-title-format
+      '(:eval (format "Emacs - %s  [ %s ]"
+                      (buffer-name)
+                      last-command))
+      icon-title-format t)
 
 ;; (menu-bar-mode 0) ;; Emacs Text Toolbar above
 (tool-bar-mode 0) ;; Close Emacs icon toolbar above
@@ -70,7 +79,7 @@ Users don't need to care about this, here is just showing you that Emacs can be 
 
 *** font
 #+begin_src emacs-lisp :tangle init.el
-(set-face-attribute 'default nil :height 140)
+(set-face-attribute 'default nil :height 160)
 ;; (set-face-attribute 'default nil :family "Consolas" :height 140)
 #+end_src
 
@@ -219,7 +228,7 @@ When you open a project with .git/.svn, you can search for the entire project co
 *** deadgrep
 *deadgrep* is a tool for searching/replacing text with the help of *ripgrep*.
 
-To use `deadgrep`, you must install: [[https://github.com/BurntSushi/ripgrep][GitHub - BurntSushi/ripgrep: ripgrep recursively searches directories for a r...]]
+To use *deadgrep*, you must install: [[https://github.com/BurntSushi/ripgrep][GitHub - BurntSushi/ripgrep: ripgrep recursively searches directories for a r...]]
 
 | Key    | Func     | Comment       |
 |--------+----------+---------------|
@@ -227,8 +236,8 @@ To use `deadgrep`, you must install: [[https://github.com/BurntSushi/ripgrep][Gi
 
 If you want to find and replace certain text of all files under the project, then you can:
 
-1. `C-x pg` Enter text to search (replace) and then `enter`
-2. Use `C-x C-q` to switch read-only/write method, directly modify content, all files can be modified
+1. *C-x pg* Enter text to search (replace) and then *Enter*
+2. Use *C-x C-q* to switch read-only/write method, directly modify content, all files can be modified
 3. Then observe whether the file/buffer content of your project has changed
 
 #+begin_src emacs-lisp :tangle init.el
@@ -239,16 +248,16 @@ If you want to find and replace certain text of all files under the project, the
 #+end_src
 
 *** consult
-`consult` is a collection of various tool commands for Emacs.
+*consult* is a collection of various tool commands for Emacs.
 
-`consult` provides preview/extension/visualization functions for these tool commands.
+*consult* provides preview/extension/visualization functions for these tool commands.
 
-Discover `consult` is unique:
+Discover *consult* is unique:
 1. First open two files/buffers
-2. Call: `M-x switch-to-buffer RET` and observe
-3. Call: `M-x consult-buffer RET` and you will find that `consult` comes with the `preview`
+2. Call: *M-x switch-to-buffer RET* and observe
+3. Call: *M-x consult-buffer RET* and you will find that *consult* comes with the *preview*
 
-The following `consult-xxxx` is a common function, and you can explore it slowly. It doesn’t matter if you don’t care.
+The following *consult-xxxx* is a common function, and you can explore it slowly. It doesn’t matter if you don’t care.
 | Command             | Comment                                                            |
 |---------------------+--------------------------------------------------------------------|
 | consult-line        | Search the text of the current buffer                              |
@@ -314,22 +323,22 @@ The following `consult-xxxx` is a common function, and you can explore it slowly
 Here we will introduce you to how to encode in Emacs.
 
 ** LSP(Language Server Protocol)
-If you don't know what `LSP` is, I have to explain to you what `LSP` is.
+If you don't know what *LSP* is, I have to explain to you what *LSP* is.
 
 Simply put: LSP is a function/definition navigation, code documentation and so on that provides code.
 With LSP, you can jump to code definitions and other things like IDEA software.
 LSP is very lightweight, and the corresponding service programs of each programming language in LSP are different. To write a programming language, you only need to have the corresponding service programs.
 
-Emacs's LSP manager is `eglot`, which is used to start the service.
+Emacs's LSP manager is *eglot*, which is used to start the service.
 
-If use `consult`, When you write the code, try to run it: `consult-imenu`, `consult-flymake`, You will find surprises.
+If use *consult*, When you write the code, try to run it: *consult-imenu*, *consult-flymake*, You will find surprises.
 
 | Key   | Cmmand                | Comment          |
 |-------+-----------------------+------------------|
 | M-.   | xref-find-definitions | Go to definition |
 | M-,   | xref-go-back          | Back             |
 | C-M-, | xref-go-forward       | Forward          |
-|       |                       |                  |
+| M-?   | xref-find-references  | Find references  |
 
 #+begin_src emacs-lisp :tangle init.el
 (use-package eglot
@@ -356,19 +365,19 @@ If use `consult`, When you write the code, try to run it: `consult-imenu`, `cons
 
 *** LSP Example For C Language
 Now let's say you're writing C language,
-Then you need to download the LSP program corresponding to C language: `clangd` ==> [[https://github.com/clangd/clangd/releases][Releases · clangd/clangd · GitHub]]
+Then you need to download the LSP program corresponding to C language: *clangd* ==> [[https://github.com/clangd/clangd/releases][Releases · clangd/clangd · GitHub]]
 
 clangd parses your code with a file: compile_commands.json
 
-For how to generate compile_commands.json in your project, please use google search, which can be generated at compile time by making/cmake.
+For how to generate =compile_commands.json= in your project, please use google search, which can be generated at compile time by making/cmake.
 
 If your project is not made/cmake or something like compile_commands.json, then you can use this function to generate it automatically.
 
-1. M-x freedom/compile-commands-json RET
+1. *M-x freedom/compile-commands-json RET*
 2. Select Project root dir
-3. Is ok, enjoy, this command will not execute any gcc compile command, it will only generate the example gcc compile command to compile_commands.json file
+3. Is ok, enjoy, this command will not execute any gcc compile command, it will only generate the example gcc compile command to =compile_commands.json= file
 
-If you are writing other programming languages, this may be different, for example, rust does not require compile_commands.json at all, rust only requires rust-analyzer.
+If you are writing other programming languages, this may be different, for example, rust does not require =compile_commands.json= at all, rust only requires *rust-analyzer*.
 #+begin_src emacs-lisp :tangle init.el
 (defun freedom/compile-commands-json ()
   "Generate compile_commands.json for all .c/.C files in the selected directory.

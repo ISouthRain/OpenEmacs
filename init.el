@@ -2,6 +2,12 @@
 (setq inhibit-startup-message t) ;; Close Emacs launch screen
 (setq inhibit-splash-screen t)   ;; Close Emacs startup help screen
 (setq initial-scratch-message (concat ";; Happy hacking, " user-login-name " - Emacs \u2665 you!\n\n"))
+;; Show your last execute command
+(setq frame-title-format
+      '(:eval (format "Emacs - %s  [ %s ]"
+                      (buffer-name)
+                      last-command))
+      icon-title-format t)
 
 ;; (menu-bar-mode 0) ;; Emacs Text Toolbar above
 (tool-bar-mode 0) ;; Close Emacs icon toolbar above
@@ -16,7 +22,7 @@
 
 (load-theme 'modus-operandi-tinted)
 
-(set-face-attribute 'default nil :height 140)
+(set-face-attribute 'default nil :height 160)
 ;; (set-face-attribute 'default nil :family "Consolas" :height 140)
 
 (setq package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
