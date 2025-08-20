@@ -1,5 +1,3 @@
-# -*- coding: utf-8; -*-
-
 ** Introduction
 No magic, no difficulty, just use Emacs.
 
@@ -71,6 +69,7 @@ If you only care about the functions that need to be called manually by the user
 The ~init.el~ file you downloaded to setup OpenEmacs is an example of Emacs Lisp, and is the place where all further configuration should happen.  Here are some examples of things that you can tweak easily:
 
 #+begin_src emacs-lisp :tangle init.el
+;; -*- lexical-binding: t; -*-
 (add-to-list 'default-frame-alist '(fullscreen . maximized)) ;; Maximize window after starting Emacs
 (setq inhibit-startup-message t) ;; Close Emacs launch screen
 (setq inhibit-splash-screen t)   ;; Close Emacs startup help screen

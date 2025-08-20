@@ -1,3 +1,4 @@
+;; -*- lexical-binding: t; -*-
 (add-to-list 'default-frame-alist '(fullscreen . maximized)) ;; Maximize window after starting Emacs
 (setq inhibit-startup-message t) ;; Close Emacs launch screen
 (setq inhibit-splash-screen t)   ;; Close Emacs startup help screen
@@ -30,11 +31,18 @@
                          ("melpa" . "https://melpa.org/packages/")))
 
 ;; Sometimes you want to keep the package available, so that it can be fixed in a certain version forever.
-;; (setq  package-archives '(("melpa" . "https://raw.githubusercontent.com/d12frosted/elpa-mirror/5a83cbae8df2c23a24b1509bfe808f6a89e5a645/melpa/");; 2025-02-25 8:00
-;;                           ("gnu" . "https://raw.githubusercontent.com/d12frosted/elpa-mirror/5a83cbae8df2c23a24b1509bfe808f6a89e5a645/gnu/");; 2025-07-25 8:00
-;;                           ("org" . "https://raw.githubusercontent.com/d12frosted/elpa-mirror/5a83cbae8df2c23a24b1509bfe808f6a89e5a645/org/");; 2025-07-25 8:00
-;;                           ("nongnu" . "https://raw.githubusercontent.com/d12frosted/elpa-mirror/5a83cbae8df2c23a24b1509bfe808f6a89e5a645/nongnu/");; 2025-07-25 8:00
+;; (setq  package-archives '(("melpa" . "https://raw.githubusercontent.com/d12frosted/elpa-mirror/5a83cbae8df2c23a24b1509bfe808f6a89e5a645/melpa/");; 2025-07-20 8:00
+;;                           ("gnu" . "https://raw.githubusercontent.com/d12frosted/elpa-mirror/5a83cbae8df2c23a24b1509bfe808f6a89e5a645/gnu/");; 2025-07-20 8:00
+;;                           ("org" . "https://raw.githubusercontent.com/d12frosted/elpa-mirror/5a83cbae8df2c23a24b1509bfe808f6a89e5a645/org/");; 2025-07-20 8:00
+;;                           ("nongnu" . "https://raw.githubusercontent.com/d12frosted/elpa-mirror/5a83cbae8df2c23a24b1509bfe808f6a89e5a645/nongnu/");; 2025-07-20 8:00
 ;;                           ))
+
+;; There is another way, if you want to install a package from a certain git repo, you can use the :vc syntax.
+;; (use-package eglot-booster
+;;   :ensure t
+;;   :vc (:url "https://github.com/jdtsmith/eglot-booster"
+;;        ;; Or :rev "tag-xxx"
+;;        :rev "e6daa6bcaf4aceee29c8a5a949b43eb1b89900ed"))
 
 (use-package vertico
   :ensure t
@@ -57,7 +65,7 @@
   :ensure t
   :hook (after-init . marginalia-mode))
 
-;; modelline display time
+;; modeline display time
 (use-package time
   :ensure nil
   :hook (after-init . display-time-mode)
@@ -88,6 +96,17 @@
 (use-package tab-line
   :ensure nil
   :hook (window-setup . global-tab-line-mode))
+
+(use-package elec-pair
+  :ensure nil
+  :hook (after-init . electric-pair-mode))
+
+(use-package company
+  :ensure t
+  :hook (after-init . global-company-mode)
+  :custom
+  (company-idle-delay 0)
+  (company-minimum-prefix-length 2))
 
 (use-package recentf
   :ensure nil
