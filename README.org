@@ -496,3 +496,7 @@ Org-mode is a writing tool (and *much*, *much* more), please go to the official 
   :ensure nil)
 #+end_src
 
+* How to use `README.org` generate `init.el` configure
+~README.org~ is an org-mode file that users can modify to directly generate the ~init.el~ configuration.
+
+Call ~M-x org-babel-tangle RET~ in the ~README.org~ file will generate ~init.el~.
