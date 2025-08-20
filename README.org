@@ -1,6 +1,6 @@
 # -*- coding: utf-8; -*-
 
-** Introduce
+** Introduction
 No magic, no difficulty, just use Emacs.
 
 Designed for an easy, humanized intuitive, out-of-the-box Emacs.
@@ -8,10 +8,10 @@ Designed for an easy, humanized intuitive, out-of-the-box Emacs.
 Emacs is not a fearful existence.
 
 [[./preview.png]]
-** Copy *OpenEmacs* Configure
-Download file: [[https://github.com/ISouthRain/OpenEmacs/blob/master/init.el][init.el]]
 
-Copy to:
+** Installation and Setup
+
+1. Download the file: [[https://github.com/ISouthRain/OpenEmacs/blob/master/init.el][init.el]] and copy it to:
 
 - *Linux/Uinx* User
 
@@ -21,33 +21,55 @@ Copy to:
 
     *C:/Users/YourUserName/AppData/Roaming/.emacs.d/init.el*
 
-Start Emacs and wait for a while, Emacs will automatically download the content.
+2. Start Emacs and wait for a while, Emacs will automatically download the content.
 
-If you encounter input like *network* for the first time, select: always
+If you encounter a prompt asking you to make a choice about  *network*,  select: always
 
-Then, start Emacs and continue reading...
+Once Emacs has completed its setup, continue reading...
 
-** README
-If you want to use it, this is something you must know:
-|--------------------+-----------+---------------------------+-----------------------|
-| Keyboard           | Emacs Key | Emacs example             | Comment               |
-|--------------------+-----------+---------------------------+-----------------------|
-| Ctrl               | C-        | Ctrl-x Ctrl-f ==> C-x C-f | Open File             |
-| Alt                | M-        | Alt-x ==> M-x             | Execute Eamcs command |
-| Enter              | RET       | Alt-x emacs-version RET   | Example Eamcs command |
-|                    |           | Ctrl-@ ==> C-@            | Select text           |
-| Up/down/left/right |           |                           | Move the cursor       |
-|                    |           | Alt-w ==> M-w             | Copy text             |
-|                    |           | Ctrl-w ==> C-w            | Cut text              |
-|                    |           | Ctrl-y ==> C-y            | Paste text            |
-|                    |           | Alt-y == M-y              | Preview Past text     |
-|--------------------+-----------+---------------------------+-----------------------|
+** Basic control
+Emacs is primarily driven by using key-combinations.  When we describe these key-combinations we use short forms, and these are reflected in both the way you configure key-bindings in emacs and the way emacs describes them to you:
 
-** The Configure
+|----------+----------------+-----------------------+--------------------------------------------------------------------------------------|
+| Keyboard | Emacs Key Name | Example               | Comment                                                                              |
+|----------+----------------+-----------------------+--------------------------------------------------------------------------------------|
+| Ctrl     | C-             | C-x C-f               | Press Ctrl and x together, and then Ctrl and f together                              |
+| Alt      | M-             | M-x                   | Press Alt and x together.                                                            |
+| Enter    | RET            | M-x emacs-version RET | Press Alt and x together, then type emacs-version and finally press Enter or Return. |
+|----------+----------------+-----------------------+--------------------------------------------------------------------------------------|
+
+The following are some of the most important key-bindings you'll need to know to control Emacs:
+
+|-----------------------+------------------------------------------------------------------------|
+| Emacs Keybinding      | Comment                                                                |
+|-----------------------+------------------------------------------------------------------------|
+| C-h t                 | Start the Emacs tutorial                                               |
+| C-x C-f               | Open File                                                              |
+| C-x C-s               | Save File                                                              |
+| C-x C-c               | Exit Emacs                                                             |
+| M-x                   | Execute Emacs command                                                  |
+| M-x emacs-version RET | Example Emacs command                                                  |
+| C-@                   | Select text                                                            |
+| M-w                   | Copy text                                                              |
+| C-w                   | Cut text                                                               |
+| C-y                   | Paste text                                                             |
+| M-y                   | Preview and cycle paste text (press repeatedly to cycle through items) |
+| M-x list-packages RET | Open Emacs package management UI.                                      |
+|-----------------------+------------------------------------------------------------------------|
+
+You can move the cursor around using the arrow keys, as per any modern text editor.  
+
+** Configuration
+
+Although, for many users, it isn't necessary to customise Emacs, one of the things that makes Emacs unique is the nearly unlimited level of customisation that is possible using Emacs' built in programming language, Emacs Lisp.
+
+If you're not comfortable working with a programming language, you can also make changes to settings, apply and save them, using Emacs customisation user interface.  To access this feature type: ~M-x customize RET~. 
+
 If you only care about the functions that need to be called manually by the user, then you jump directly to the title: =recent=
 
 *** Basic
-Users don't need to care about this, here is just showing you that Emacs can be customized through configuration files.
+The ~init.el~ file you downloaded to setup OpenEmacs is an example of Emacs Lisp, and is the place where all further configuration should happen.  Here are some examples of things that you can tweak easily:
+
 #+begin_src emacs-lisp :tangle init.el
 (add-to-list 'default-frame-alist '(fullscreen . maximized)) ;; Maximize window after starting Emacs
 (setq inhibit-startup-message t) ;; Close Emacs launch screen
@@ -72,19 +94,26 @@ Users don't need to care about this, here is just showing you that Emacs can be 
       delete-by-moving-to-trash t) ;; Emacs moves to the recycling bin when deleting files
 #+end_src
 
-*** theme
+Note that lines starting with ~;;~ are commented out.
+
+*** Theme
+
+This  example shows how to enable an Emacs theme.  Note: themes are distributed as Emacs packages.
+
 #+begin_src emacs-lisp :tangle init.el
 (load-theme 'modus-operandi-tinted)
 #+end_src
 
-*** font
+*** Font
+
+This example shows how to adjust properties of fonts in use. 
 #+begin_src emacs-lisp :tangle init.el
 (set-face-attribute 'default nil :height 160)
 ;; (set-face-attribute 'default nil :family "Consolas" :height 140)
 #+end_src
 
 *** package-archives
-Manage download package sources.
+This example shows  how you can define sources for obtaining Emacs packages on-line.
 #+begin_src emacs-lisp :tangle init.el
 (setq package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
                          ("nongnu" . "https://elpa.nongnu.org/nongnu/")
@@ -106,7 +135,7 @@ Manage download package sources.
 #+end_src
 
 *** vertico
-Users don't need to care about how to use this, it is already in use.
+Note: Users don't need to care about how to use this, it is already in use.
 
 *vertico* is a plugin that provides user-friendly for Emacs *minibuffer*.
 #+begin_src emacs-lisp :tangle init.el
@@ -121,7 +150,7 @@ Users don't need to care about how to use this, it is already in use.
 #+end_src
 
 *** orderless
-Users don't need to care about how to use this, it is already in use.
+Note: Users don't need to care about how to use this, it is already in use.
 
 *orderless* is a tool that provides fuzzy search and is very practical.
 #+begin_src emacs-lisp :tangle init.el
@@ -133,8 +162,8 @@ Users don't need to care about how to use this, it is already in use.
         completion-category-overrides '((file (styles partial-completion)))))
 #+end_src
 
-*** marginalia
-Users don't need to care about how to use this, it is already in use.
+*** Marginalia
+Note: Users don't need to care about how to use this, it is already in use.
 
 *marginalia* allows Emacs *minibuffer* to display comments.
 #+begin_src emacs-lisp :tangle init.el
@@ -147,7 +176,7 @@ Users don't need to care about how to use this, it is already in use.
 *** time
 Let Emacs' *modeline* display time
 #+begin_src emacs-lisp :tangle init.el
-;; modelline display time
+;; modeline display time
 (use-package time
   :ensure nil
   :hook (after-init . display-time-mode)
@@ -159,7 +188,9 @@ Let Emacs' *modeline* display time
 #+end_src
 
 *** autorevert
-Users don't need to care about how to use this, it is already in use.
+Note: Users don't need to care about how to use this, it is already in use.
+
+*autorevert* causes files to be automatically updated in Emacs when an external program makes a change to them.
 #+begin_src emacs-lisp :tangle init.el
 ;; Automatically update files after external changes
 (use-package autorevert
@@ -168,9 +199,9 @@ Users don't need to care about how to use this, it is already in use.
 #+end_src
 
 *** saveplace
-Users don't need to care about how to use this, it is already in use.
+Note: Users don't need to care about how to use this, it is already in use.
 
-When you reopen a file, it will automatically restore to the location where you were in the file last time.
+*saveplace*  will automatically restore your location in the file to where you were in the file last time to opened it.
 #+begin_src emacs-lisp :tangle init.el
 ;; Where the cursor is located before saving each file
 (use-package saveplace
@@ -181,7 +212,7 @@ When you reopen a file, it will automatically restore to the location where you 
 #+end_src
 
 *** which-key
-Users don't need to care about how to use this, it is already in use.
+Note: Users don't need to care about how to use this, it is already in use.
 
 *which-key* can help the user indicate what functions your next key will perform.
 #+begin_src emacs-lisp :tangle init.el
@@ -193,9 +224,9 @@ Users don't need to care about how to use this, it is already in use.
 #+end_src
 
 *** tab-line
-Users don't need to care about how to use this, it is already in use.
+Note: Users don't need to care about how to use this, it is already in use.
 
-Show buffer name.
+Show the buffer names as a row of tabs at the top of the window.
 #+begin_src emacs-lisp :tangle init.el
 (use-package tab-line
   :ensure nil
@@ -203,9 +234,9 @@ Show buffer name.
 #+end_src
 
 *** recentf
-Automatically record the file you open, making it easier to open it next time.
+*recentf* will automatically record the file you open, making it easier to open it next time.
 
-How to use: *M-x recentf RET*
+To open a file from the list of recently opened files type ~M-x recentf RET~
 #+begin_src emacs-lisp :tangle init.el
 (use-package recentf
   :ensure nil
@@ -220,7 +251,9 @@ How to use: *M-x recentf RET*
 #+end_src
 
 *** project
-When you open a project with .git/.svn, you can search for the entire project content.
+
+*project* automatically detects the root-folder of project that uses source-control (e.g. git or subversion). Within such a project you can search for the entire project content with the following commands and key-bindings:
+
 | Key    | Func                                                                  | Comment                              |
 |--------+-----------------------------------------------------------------------+--------------------------------------|
 | C-x pf | project-find-file                                                     | Search Project File                  |
@@ -248,7 +281,7 @@ To use *deadgrep*, you must install: [[https://github.com/BurntSushi/ripgrep][Gi
 |--------+----------+---------------|
 | C-x pg | deadgrep | Search/Replace Text |
 
-If you want to find and replace certain text of all files under the project, then you can:
+If you want to find and replace certain text in all files under the project, then you can:
 
 1. *C-x pg* Enter text to search (replace) and then *Enter*
 2. Use *C-x C-q* to switch read-only/write method, directly modify content, all files can be modified
@@ -333,19 +366,18 @@ The following *consult-xxxx* is a common function, and you can explore it slowly
   )
 #+end_src
 
-* Coding
-Here we will introduce you to how to encode in Emacs.
+* Coding in Emacs
+Here we will introduce you to how to code in Emacs.
 
-** LSP(Language Server Protocol)
-If you don't know what *LSP* is, I have to explain to you what *LSP* is.
+** LSP (Language Server Protocol)
 
-Simply put: LSP is a function/definition navigation, code documentation and so on that provides code.
-With LSP, you can jump to code definitions and other things like IDEA software.
-LSP is very lightweight, and the corresponding service programs of each programming language in LSP are different. To write a programming language, you only need to have the corresponding service programs.
+*LSP* is a protocol that allows editors and IDE's like Emacs to talk to a language-specific service that understands the structure of the programming language and can provide navigation, code documentation, introspection, refactoring support and other actions and information.  By externalising this functionality the same LSP server can be used by Emacs as is provided for VS Code, NeoVim or any other environment that supports LSP.
 
-Emacs's LSP manager is *eglot*, which is used to start the service.
+LSP is very lightweight, and the corresponding service programs of each programming language in LSP are different. To support a programming language, you only need to have the corresponding service programs.
 
-If use *consult*, When you write the code, try to run it: *consult-imenu*, *consult-flymake*, You will find surprises.
+Emacs's built-in LSP manager is called *eglot*, which is used to start the service.
+
+If use *consult*, When you write the code, try to run it: *consult-imenu*, *consult-flymake*, You will find surprises!
 
 | Key   | Cmmand                | Comment          |
 |-------+-----------------------+------------------|
@@ -377,21 +409,20 @@ If use *consult*, When you write the code, try to run it: *consult-imenu*, *cons
   )
 #+end_src
 
-*** LSP Example For C Language
-Now let's say you're writing C language,
-Then you need to download the LSP program corresponding to C language: *clangd* ==> [[https://github.com/clangd/clangd/releases][Releases · clangd/clangd · GitHub]]
+*** LSP Example for the C Programming Language
+Let's say you're writing a program in C.  You'll need to download the LSP program corresponding to C language: *clangd* ==> [[https://github.com/clangd/clangd/releases][Releases · clangd/clangd · GitHub]]
 
-clangd parses your code with a file: compile_commands.json
+clangd parses your code based on a configuration within the file: ~compile_commands.json~
 
-For how to generate =compile_commands.json= in your project, please use google search, which can be generated at compile time by making/cmake.
+If you're using Make or Cmake, you should be able find instructions  on how to generate ~compile_commands.json~ for your project at compile time, with a quick internet search.
 
-If your project is not made/cmake or something like compile_commands.json, then you can use this function to generate it automatically.
+If your project is not using Make or Cmake,  and you don't already have a ~compile_commands.json~, then you can use this method to generate it automatically:
 
 1. *M-x freedom/compile-commands-json RET*
 2. Select Project root dir
-3. Is ok, enjoy, this command will not execute any gcc compile command, it will only generate the example gcc compile command to =compile_commands.json= file
+3. Don't worry, this command will not execute any compilation commands, it will only write the generated gcc compile command to =compile_commands.json= file
 
-If you are writing other programming languages, this may be different, for example, rust does not require =compile_commands.json= at all, rust only requires *rust-analyzer*.
+Note: If you are writing other programming languages, this may be different, for example, rust does not require =compile_commands.json= at all, rust only requires *rust-analyzer*.
 #+begin_src emacs-lisp :tangle init.el
 (defun freedom/compile-commands-json ()
   "Generate compile_commands.json for all .c/.C files in the selected directory.
@@ -431,7 +462,7 @@ Includes all directories containing .h/.H files as -I include paths."
 
 * Writing
 ** Org-mode
-Org-mdoe is a writing artifact, please go to the official website to learn more: [[https://orgmode.org/][Org mode for GNU Emacs]]
+Org-mode is a writing tool (and *much*, *much* more), please go to the official website to learn more: [[https://orgmode.org/][Org mode for GNU Emacs]]
 #+begin_src emacs-lisp :tangle init.el
 (use-package org
   :ensure nil)
