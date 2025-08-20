@@ -233,6 +233,34 @@ Show the buffer names as a row of tabs at the top of the window.
   :hook (window-setup . global-tab-line-mode))
 #+end_src
 
+*** elec-pair
+Note: Users don't need to care about how to use this, it is already in use.
+
+~elec-pair~ is an Emacs tool for automatically pairing parentheses.
+
+You might find it strange that even parentheses completion needs to be enabled;
+this is thanks to Emacs being fully customizable by users according to their personal preferences.
+#+begin_src emacs-lisp :tangle init.el
+(use-package elec-pair
+  :ensure nil
+  :hook (after-init . electric-pair-mode))
+#+end_src
+
+*** company
+Note: Users don't need to care about how to use this, it is already in use.
+
+~company~ is a complete framework for Emacs.
+
+~C-g~ to quit complete.
+#+begin_src emacs-lisp :tangle init.el
+(use-package company
+  :ensure t
+  :hook (after-init . global-company-mode)
+  :custom
+  (company-idle-delay 0)
+  (company-minimum-prefix-length 2))
+#+end_src
+
 *** recentf
 *recentf* will automatically record the file you open, making it easier to open it next time.
 
