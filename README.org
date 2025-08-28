@@ -100,7 +100,10 @@ Note that lines starting with ~;;~ are commented out.
 This  example shows how to enable an Emacs theme.  Note: themes are distributed as Emacs packages.
 
 #+begin_src emacs-lisp :tangle init.el
+;; light
 (load-theme 'modus-operandi-tinted)
+;; dark
+;; (load-theme 'modus-vivendi-tinted)
 #+end_src
 
 *** Font

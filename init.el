@@ -21,7 +21,10 @@
       create-lockfiles nil         ;; Close Create a backup file
       delete-by-moving-to-trash t) ;; Emacs moves to the recycling bin when deleting files
 
+;; light
 (load-theme 'modus-operandi-tinted)
+;; dark
+;; (load-theme 'modus-vivendi-tinted)
 
 (set-face-attribute 'default nil :height 160)
 ;; (set-face-attribute 'default nil :family "Consolas" :height 140)
