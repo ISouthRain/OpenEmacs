@@ -119,6 +119,24 @@
   :config
   (recentf-cleanup))
 
+(use-package undo-fu
+  :ensure t
+  :bind
+  (([remap undo-redo] . undo-fu-only-redo)
+   ([remap undo] . undo-fu-only-undo))
+  :custom
+  (undo-limit 67108864) ; 64mb.
+  (undo-strong-limit 100663296) ; 96mb.
+  (undo-outer-limit 1006632960) ; 960mb.
+  )
+(use-package undo-fu-session
+  :ensure t
+  :hook (after-init . undo-fu-session-global-mode)
+  :custom
+  (undo-fu-session-directory "~/.emacs.d/undo-fu-session")
+  (undo-fu-session-compression 'nil) ;; Default `Emacs builtin`, You Can use ==> BZip2/GZip/XZ/Z-Standrad
+  )
+
 (use-package project
   :ensure nil)
 

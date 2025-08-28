@@ -277,6 +277,34 @@ To open a file from the list of recently opened files type ~M-x recentf RET~
   (recentf-cleanup))
 #+end_src
 
+*** undo/redo
+Note: Users don't need to care about how to use this, it is already in use.
+
+~undo-fu~ is an Emacs tool that persistently saves your editing history.
+| Call                  | Key | Comment |
+|-----------------------+-----+---------|
+| M-x undo-fu-only-undo | C-/ | Undo    |
+| M-x undo-fu-only-redo | C-? | Redo    |
+#+begin_src emacs-lisp :tangle init.el
+(use-package undo-fu
+  :ensure t
+  :bind
+  (([remap undo-redo] . undo-fu-only-redo)
+   ([remap undo] . undo-fu-only-undo))
+  :custom
+  (undo-limit 67108864) ; 64mb.
+  (undo-strong-limit 100663296) ; 96mb.
+  (undo-outer-limit 1006632960) ; 960mb.
+  )
+(use-package undo-fu-session
+  :ensure t
+  :hook (after-init . undo-fu-session-global-mode)
+  :custom
+  (undo-fu-session-directory "~/.emacs.d/undo-fu-session")
+  (undo-fu-session-compression 'nil) ;; Default `Emacs builtin`, You Can use ==> BZip2/GZip/XZ/Z-Standrad
+  )
+#+end_src
+
 *** project
 
 *project* automatically detects the root-folder of project that uses source-control (e.g. git or subversion). Within such a project you can search for the entire project content with the following commands and key-bindings:
