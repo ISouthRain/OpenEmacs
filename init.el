@@ -157,7 +157,7 @@
    ([remap switch-to-buffer-other-frame] . consult-buffer-other-frame)
    ("M-g M-g" . consult-line)
    ("M-g g" . consult-goto-line)
-   ([remap bookmark-jump] . freedom/consult-bookmark)
+   ([remap bookmark-jump] . consult-bookmark)
    ([remap repeat-complex-command] . consult-complex-command)
    ([remap yank-pop] . consult-yank-pop)
    ([remap Info-search] . consult-info)
