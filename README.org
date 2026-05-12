@@ -8,18 +8,23 @@ Emacs is not a fearful existence.
 [[./preview.png]]
 
 ** Installation and Setup
+*** Linux/MacOS User Install
+#+begin_src shell
+# Backup your file.
+# mv ~/.emacs.d ~/.emacs.d.bk/
+git clone --depth=1 https://github.com/ISouthRain/OpenEmacs ~/.emacs.d
+#+end_src
 
-1. Download the file: [[https://github.com/ISouthRain/OpenEmacs/blob/master/init.el][init.el]] and copy it to:
+*** Windows User Install
+#+begin_src shell
+# Use powershell shell
+# Backup your file.
+# Move-Item "$env:APPDATA\.emacs.d" "$env:APPDATA\.emacs.d.bk"
+git clone --depth=1 https://github.com/ISouthRain/OpenEmacs "$env:APPDATA\.emacs.d"
+#+end_src
 
-- *Linux/Uinx* User
-
-    *~/.emacs.d/init.el*
-
-- *Windows* User
-
-    *C:/Users/YourUserName/AppData/Roaming/.emacs.d/init.el*
-
-2. Start Emacs and wait for a while, Emacs will automatically download the content.
+*** Start use
+Start Emacs and wait for a while, Emacs will automatically download the content.
 
 If you encounter a prompt asking you to make a choice about  *network*,  select: always
 
@@ -56,6 +61,11 @@ The following are some of the most important key-bindings you'll need to know to
 |-----------------------+------------------------------------------------------------------------|
 
 You can move the cursor around using the arrow keys, as per any modern text editor.  
+
+** Use `README.org` generate `init.el` configure for yourself
+~README.org~ is an ~org-mode~ file that users can modify to directly generate the ~init.el~ configuration.
+
+Call ~M-x org-babel-tangle RET~ in the ~README.org~ file will generate ~init.el~.
 
 ** Configuration
 
@@ -362,7 +372,7 @@ Discover *consult* is unique:
 2. Call: *M-x switch-to-buffer RET* and observe
 3. Call: *M-x consult-buffer RET* and you will find that *consult* comes with the *preview*
 
-The following *consult-xxxx* is a common function, and you can explore it slowly. It doesn’t matter if you don’t care.
+The following *consult-xxxx* is a common function, and you can explore it slowly. It doesn't matter if you don't care.
 | Command             | Comment                                                            |
 |---------------------+--------------------------------------------------------------------|
 | consult-line        | Search the text of the current buffer                              |
@@ -427,7 +437,7 @@ The following *consult-xxxx* is a common function, and you can explore it slowly
 * Coding in Emacs
 Here we will introduce you to how to code in Emacs.
 
-** LSP (Language Server Protocol)
+** LSP (Language Server Protocol) Guide
 
 *LSP* is a protocol that allows editors and IDE's like Emacs to talk to a language-specific service that understands the structure of the programming language and can provide navigation, code documentation, introspection, refactoring support and other actions and information.  By externalising this functionality the same LSP server can be used by Emacs as is provided for VS Code, NeoVim or any other environment that supports LSP.
 
@@ -468,7 +478,7 @@ If use *consult*, When you write the code, try to run it: *consult-imenu*, *cons
 #+end_src
 
 *** LSP Example for the C Programming Language
-Let's say you're writing a program in C.  You'll need to download the LSP program corresponding to C language: *clangd* ==> [[https://github.com/clangd/clangd/releases][Releases · clangd/clangd · GitHub]]
+Let's say you're writing a program in C.  You'll need to download the LSP program corresponding to C language: *clangd* ==> [[https://github.com/clangd/clangd/releases][Releases clangd/clangd GitHub]]
 
 clangd parses your code based on a configuration within the file: ~compile_commands.json~
 
@@ -518,6 +528,35 @@ Includes all directories containing .h/.H files as -I include paths."
     (message "compile_commands.json generated at: %s" json-file)))
 #+end_src
 
+** eldoc-box
+~eldoc-box~ to show code document.
+
+If use ~eldoc-box~, Please relpace the code block ~:tangle no~ to ~:tangle init.el~, and ~M-x: org-babel-tangle~
+#+begin_src emacs-lisp :tangle no
+(use-package eldoc-box
+  :ensure t
+  :diminish (eldoc-box-hover-mode eldoc-box-hover-point-mode)
+  :hook (eldoc-mode . eldoc-box-hover-mode)
+  :custom
+  (eldoc-box-max-pixel-height 400)
+  (eldoc-box-max-pixel-width 500))
+#+end_src
+
+** Rust
+If use ~Rust~, Please relpace the code block ~:tangle no~ to ~:tangle init.el~, and ~M-x: org-babel-tangle~
+#+begin_src emacs-lisp :tangle no
+(use-package rust-mode
+  :ensure t
+  :hook ((rust-mode rust-ts-mode) . eglot-ensure)
+  )
+(use-package cargo
+ :ensure t
+ :diminish (cargo-minor-mode)
+ :after rust-mode
+ :hook ((rust-mode rust-ts-mode) . cargo-minor-mode)
+ )
+#+end_src
+
 * Writing
 ** Org-mode
 Org-mode is a writing tool (and *much*, *much* more), please go to the official website to learn more: [[https://orgmode.org/][Org mode for GNU Emacs]]
@@ -526,7 +565,12 @@ Org-mode is a writing tool (and *much*, *much* more), please go to the official 
   :ensure nil)
 #+end_src
 
-* How to use `README.org` generate `init.el` configure
-~README.org~ is an org-mode file that users can modify to directly generate the ~init.el~ configuration.
+* Other
+** early-init.el
+#+begin_src emacs-lisp :tangle early-init.el
+;; -*- coding: utf-8; lexical-binding: t; -*-
 
-Call ~M-x org-babel-tangle RET~ in the ~README.org~ file will generate ~init.el~.
+;; Note: Compiling and generating ELN files will boost Emacs' speed and performance.
+;; It is disabled because Emacs compiles ELN files on its first startup, which can make Emacs very sluggish.
+(setq native-comp-jit-compilation nil) ;; disable .emacs.d/*.eln generate
+#+end_src
