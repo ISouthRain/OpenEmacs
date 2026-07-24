@@ -1,0 +1,6 @@
+*
+!/early-init.el
+!/.gitignore
+!/init.el
+!/preview.png
+!/README.org
